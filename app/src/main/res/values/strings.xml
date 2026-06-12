@@ -1,0 +1,53 @@
+<resources>
+    <string name="app_name">ExpressFood</string>
+
+    <string name="login_title">ExpressFood</string>
+    <string name="login_subtitle">Tu comida favorita, al instante</string>
+    <string name="login_google">Continuar con Google</string>
+    <string name="login_error">Error al iniciar sesión</string>
+    <string name="login_error_developer">Error de configuración (código 10). Agrega tu SHA-1 en Firebase Console y vuelve a descargar google-services.json.</string>
+    <string name="login_error_cancelled">Inicio de sesión cancelado</string>
+
+    <string name="nav_menu">Menú</string>
+    <string name="nav_cart">Carrito</string>
+    <string name="nav_orders">Mis Órdenes</string>
+    <string name="nav_report">Reporte</string>
+    <string name="nav_admin_orders">Órdenes</string>
+    <string name="nav_admin_report">Reporte</string>
+    <string name="nav_admin_products">Productos</string>
+
+    <string name="online">ONLINE</string>
+    <string name="offline">OFFLINE</string>
+    <string name="search_name">Buscar por nombre</string>
+    <string name="search_ingredient">Filtrar por ingrediente</string>
+    <string name="added_to_cart">Producto agregado al carrito</string>
+    <string name="cart_empty">El carrito está vacío</string>
+    <string name="process_order">Procesar Orden</string>
+    <string name="subtotal">Subtotal</string>
+    <string name="tax">Impuesto (13%)</string>
+    <string name="total">Total</string>
+    <string name="order_created">Orden creada exitosamente</string>
+    <string name="order_created_offline">Orden guardada offline. Se sincronizará al reconectar.</string>
+    <string name="filter_all">Todas</string>
+    <string name="monthly_total">Total acumulado mensual</string>
+    <string name="logout">Cerrar sesión</string>
+
+    <string name="status_created">Creada</string>
+    <string name="status_pending">Pendiente</string>
+    <string name="status_on_the_way">En camino</string>
+    <string name="status_delivered">Entregada</string>
+    <string name="status_cancelled">Cancelada</string>
+
+    <string name="filter_client">Filtrar por cliente</string>
+    <string name="filter_date">Filtrar por fecha (yyyy-MM-dd)</string>
+    <string name="btn_on_the_way">En camino</string>
+    <string name="btn_delivered">Entregada</string>
+    <string name="btn_cancel">Cancelar</string>
+    <string name="btn_add_product">Agregar producto</string>
+    <string name="btn_save">Guardar</string>
+    <string name="btn_edit">Editar</string>
+    <string name="btn_delete">Eliminar</string>
+    <string name="btn_toggle">Activar/Desactivar</string>
+    <string name="orders_count">Cantidad de órdenes</string>
+    <string name="revenue">Ingresos</string>
+</resources>

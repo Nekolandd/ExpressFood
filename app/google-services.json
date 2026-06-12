@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "771816697352",
+    "project_id": "expressfood-dp",
+    "storage_bucket": "expressfood-dp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:771816697352:android:99f3bf5d29863f9f436bbd",
+        "android_client_info": {
+          "package_name": "com.example.expressfood"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "771816697352-nbsajr4rb3ld17u9fd00vab6blmegni7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.expressfood",
+            "certificate_hash": "91b49c4e2cbd9b98f01de7ec5615148a1f3325b8"
+          }
+        },
+        {
+          "client_id": "771816697352-svtnoinrn6stjsk6cgqshkric5soos1h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.expressfood",
+            "certificate_hash": "1b4836ffc50133b4fd620a533897bde24b6f4dd5"
+          }
+        },
+        {
+          "client_id": "771816697352-to999k1r1pi0p1tkbheavjr7qmc8pd7s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.expressfood",
+            "certificate_hash": "a461abee6538a22542302bcc6f97da537a058054"
+          }
+        },
+        {
+          "client_id": "771816697352-2gijv6pb224u4ca0q2jtsi83qf8cso0q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcvX_gh9zdzOV6zMzzU4ay72f2IoMzLfE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "771816697352-2gijv6pb224u4ca0q2jtsi83qf8cso0q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

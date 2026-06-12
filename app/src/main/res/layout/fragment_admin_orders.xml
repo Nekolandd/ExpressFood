@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="12dp">
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </HorizontalScrollView>
+
+    <EditText
+        android:id="@+id/etClientFilter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/filter_client"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/etDateFilter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/filter_date"
+        android:inputType="date" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvAdminOrders"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="72dp" />
+
+</LinearLayout>
