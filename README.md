@@ -11,17 +11,19 @@ ExpressFood permite a **clientes** explorar un menú, agregar productos al carri
 
 ## Tecnologías
 
-| Tecnología | Uso |
-|---|---|
-| Kotlin | Lenguaje principal |
-| Firebase Authentication | Login con Google |
-| Firebase Firestore | Backend remoto (`users`, `products`, `orders`) |
-| Room (SQLite) | Cache local y persistencia offline |
-| RecyclerView | Listas de menú, carrito, órdenes |
-| MVVM + Repository | Arquitectura de capas |
-| WorkManager | Sincronización automática |
-| Coil | Carga de imágenes por URL |
-| GitHub Actions | CI/CD con APK firmado y releases |
+
+| Tecnología              | Uso                                            |
+| ----------------------- | ---------------------------------------------- |
+| Kotlin                  | Lenguaje principal                             |
+| Firebase Authentication | Login con Google                               |
+| Firebase Firestore      | Backend remoto (`users`, `products`, `orders`) |
+| Room (SQLite)           | Cache local y persistencia offline             |
+| RecyclerView            | Listas de menú, carrito, órdenes               |
+| MVVM + Repository       | Arquitectura de capas                          |
+| WorkManager             | Sincronización automática                      |
+| Coil                    | Carga de imágenes por URL                      |
+| GitHub Actions          | CI/CD con APK firmado y releases               |
+
 
 ## Arquitectura
 
@@ -42,16 +44,18 @@ util/        → Filtros, cálculos, conectividad, reportes
 2. Se verifica/crea el usuario en Firestore (`users/{uid}`), consultando el servidor primero.
 3. Rol por defecto: `client`.
 4. Redirección según rol:
-   - `client` → `ClientActivity`
-   - `admin` → `AdminActivity`
+  - `client` → `ClientActivity`
+  - `admin` → `AdminActivity`
 
 ### Room (cache local)
 
-| Entidad | Contenido |
-|---|---|
-| `ProductEntity` | Menú cacheado |
-| `CartItemEntity` | Carrito local |
+
+| Entidad                           | Contenido       |
+| --------------------------------- | --------------- |
+| `ProductEntity`                   | Menú cacheado   |
+| `CartItemEntity`                  | Carrito local   |
 | `OrderEntity` / `OrderItemEntity` | Órdenes offline |
+
 
 Room es la fuente inmediata para el cliente. Firestore es el backend remoto.
 
@@ -63,13 +67,15 @@ Room es la fuente inmediata para el cliente. Firestore es el backend remoto.
 
 ### Offline First
 
-| Escenario | Comportamiento |
-|---|---|
-| Menú | Cacheado en Room vía `SyncMenuWorker` |
-| Crear orden sin internet | Guardada en Room con `synced=false` |
-| Recuperar conexión | `SyncScheduler` encola sync inmediato; `SyncOrdersWorker` sube pendientes y descarga cambios |
-| Cambio de estado (admin) | Listener de Firestore actualiza Room en el cliente en tiempo real |
-| Indicador UI | ONLINE / OFFLINE en toolbar |
+
+| Escenario                | Comportamiento                                                                               |
+| ------------------------ | -------------------------------------------------------------------------------------------- |
+| Menú                     | Cacheado en Room vía `SyncMenuWorker`                                                        |
+| Crear orden sin internet | Guardada en Room con `synced=false`                                                          |
+| Recuperar conexión       | `SyncScheduler` encola sync inmediato; `SyncOrdersWorker` sube pendientes y descarga cambios |
+| Cambio de estado (admin) | Listener de Firestore actualiza Room en el cliente en tiempo real                            |
+| Indicador UI             | ONLINE / OFFLINE en toolbar                                                                  |
+
 
 ### WorkManager y sincronización
 
@@ -100,12 +106,14 @@ Room es la fuente inmediata para el cliente. Firestore es el backend remoto.
 
 ### Badges de estado
 
-| Estado | Color |
-|---|---|
-| PENDING | Amarillo |
-| ON_THE_WAY | Azul |
-| DELIVERED | Verde |
-| CANCELLED | Rojo |
+
+| Estado     | Color    |
+| ---------- | -------- |
+| PENDING    | Amarillo |
+| ON_THE_WAY | Azul     |
+| DELIVERED  | Verde    |
+| CANCELLED  | Rojo     |
+
 
 ## Seed inicial
 
@@ -144,13 +152,10 @@ Cada uno incluye imagen pública (Unsplash), precio, ingredientes, rating y tiem
 Si aparece **"10:"** o un toast de configuración, el SHA-1 de tu PC no está registrado en Firebase.
 
 1. Obtén tu SHA-1 de debug:
-   ```powershell
+  ```powershell
    .\gradlew.bat signingReport
-   ```
+  ```
    En Windows, si `keytool` no está en PATH:
-   ```powershell
-   & "C:\Program Files\Android\Android Studio\jbr\bin\keytool.exe" -list -v -keystore "$env:USERPROFILE\.android\debug.keystore" -alias androiddebugkey -storepass android -keypass android
-   ```
 2. [Firebase Console](https://console.firebase.google.com) → proyecto **expressfood-dp** → ⚙️ **Configuración del proyecto**
 3. En **Tus apps** → app Android `com.example.expressfood` → **Agregar huella digital**
 4. Pega el SHA-1 (debug para desarrollo; release para APK de producción) y guarda
@@ -173,23 +178,27 @@ Por defecto todos los usuarios nuevos tienen `role: "client"`. Para promover a a
 
 ## CI/CD
 
-Pipeline en [`.github/workflows/android-ci.yml`](.github/workflows/android-ci.yml):
+Pipeline en `[.github/workflows/android-ci.yml](.github/workflows/android-ci.yml)`:
 
-| Job | Qué hace |
-|---|---|
+
+| Job              | Qué hace                                                                        |
+| ---------------- | ------------------------------------------------------------------------------- |
 | `build-and-test` | `lintDebug`, `testDebugUnitTest`, `jacocoTestReport`, sube reporte de cobertura |
-| `build-apk` | Decodifica secrets, compila `assembleRelease` firmado, sube APK como artifact |
-| `release` | Solo en tags `v*` — publica el APK en GitHub Releases |
+| `build-apk`      | Decodifica secrets, compila `assembleRelease` firmado, sube APK como artifact   |
+| `release`        | Solo en tags `v`* — publica el APK en GitHub Releases                           |
+
 
 ### Secrets de GitHub (Settings → Secrets → Actions)
 
-| Secret | Descripción |
-|---|---|
-| `GOOGLE_SERVICES_JSON` | Contenido de `app/google-services.json` en Base64 |
-| `RELEASE_KEYSTORE_BASE64` | Keystore `.jks` en Base64 |
-| `KEYSTORE_PASSWORD` | Contraseña del keystore |
-| `KEY_ALIAS` | Alias de la clave (ej. `expressfood`) |
-| `KEY_PASSWORD` | Contraseña de la clave |
+
+| Secret                    | Descripción                                       |
+| ------------------------- | ------------------------------------------------- |
+| `GOOGLE_SERVICES_JSON`    | Contenido de `app/google-services.json` en Base64 |
+| `RELEASE_KEYSTORE_BASE64` | Keystore `.jks` en Base64                         |
+| `KEYSTORE_PASSWORD`       | Contraseña del keystore                           |
+| `KEY_ALIAS`               | Alias de la clave (ej. `expressfood`)             |
+| `KEY_PASSWORD`            | Contraseña de la clave                            |
+
 
 ### Publicar una release
 
@@ -204,18 +213,20 @@ El workflow genera automáticamente un GitHub Release con el APK firmado.
 
 **10 tests** en `app/src/test/` que cubren la lógica principal del enunciado:
 
-| # | Test | Archivo | Qué valida |
-|---|---|---|---|
-| 1 | `filterByName_returnsMatchingItems` | `util/ProductFilterTest.kt` | Filtro del menú por nombre |
-| 2 | `filterByIngredient_returnsMatchingItems` | `util/ProductFilterTest.kt` | Filtro del menú por ingrediente |
-| 3 | `calculateFromCart_returnsSubtotalTaxAndTotal` | `util/OrderCalculatorTest.kt` | Subtotal, impuesto 13% y total |
-| 4 | `groupOrdersByDate_groupsOrdersAndSumsTotals` | `util/ReportHelperTest.kt` | Reporte agrupado por día |
-| 5 | `monthlyAccumulated_sumsOrdersInMonth` | `util/ReportHelperTest.kt` | Acumulado mensual |
-| 6 | `setNameFilter_showsMatchingProducts` | `ui/menu/MenuViewModelTest.kt` | ViewModel del menú |
-| 7 | `setStatusFilter_returnsMatchingOrders` | `ui/orders/ClientOrdersViewModelTest.kt` | Filtro de órdenes del cliente |
-| 8 | `processOrder_clearsCartOnSuccess` | `ui/cart/CartViewModelTest.kt` | Procesar orden y vaciar carrito |
-| 9 | `addProduct_insertsWhenNotInCart` | `data/repository/CartRepositoryTest.kt` | Agregar producto al carrito |
-| 10 | `createOrderFromCart_offlineMarksOrderAsNotSynced` | `data/repository/OrderRepositoryTest.kt` | Orden offline con `synced=false` |
+
+| #   | Test                                               | Archivo                                  | Qué valida                       |
+| --- | -------------------------------------------------- | ---------------------------------------- | -------------------------------- |
+| 1   | `filterByName_returnsMatchingItems`                | `util/ProductFilterTest.kt`              | Filtro del menú por nombre       |
+| 2   | `filterByIngredient_returnsMatchingItems`          | `util/ProductFilterTest.kt`              | Filtro del menú por ingrediente  |
+| 3   | `calculateFromCart_returnsSubtotalTaxAndTotal`     | `util/OrderCalculatorTest.kt`            | Subtotal, impuesto 13% y total   |
+| 4   | `groupOrdersByDate_groupsOrdersAndSumsTotals`      | `util/ReportHelperTest.kt`               | Reporte agrupado por día         |
+| 5   | `monthlyAccumulated_sumsOrdersInMonth`             | `util/ReportHelperTest.kt`               | Acumulado mensual                |
+| 6   | `setNameFilter_showsMatchingProducts`              | `ui/menu/MenuViewModelTest.kt`           | ViewModel del menú               |
+| 7   | `setStatusFilter_returnsMatchingOrders`            | `ui/orders/ClientOrdersViewModelTest.kt` | Filtro de órdenes del cliente    |
+| 8   | `processOrder_clearsCartOnSuccess`                 | `ui/cart/CartViewModelTest.kt`           | Procesar orden y vaciar carrito  |
+| 9   | `addProduct_insertsWhenNotInCart`                  | `data/repository/CartRepositoryTest.kt`  | Agregar producto al carrito      |
+| 10  | `createOrderFromCart_offlineMarksOrderAsNotSynced` | `data/repository/OrderRepositoryTest.kt` | Orden offline con `synced=false` |
+
 
 ```powershell
 # Ejecutar los 10 tests
@@ -248,4 +259,4 @@ com.example.expressfood
 
 ## Licencia
 
-Proyecto académico — Grupo Estrella, ExpressFood.
+Proyecto académico — ExpressFood.
