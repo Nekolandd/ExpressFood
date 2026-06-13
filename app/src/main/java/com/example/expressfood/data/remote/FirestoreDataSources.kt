@@ -43,7 +43,11 @@ class FirestoreUserDataSource(
         name: String,
         email: String
     ): User {
-        val existing = getUser(userId)
+        val existing = try {
+            getUserFromSource(userId, Source.SERVER)
+        } catch (_: Exception) {
+            getUserFromSource(userId, Source.CACHE)
+        }
         if (existing != null) return existing
 
         val newUser = User(

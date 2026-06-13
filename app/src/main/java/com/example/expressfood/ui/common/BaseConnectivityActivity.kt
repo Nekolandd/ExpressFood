@@ -13,6 +13,7 @@ import com.example.expressfood.ExpressFoodApplication
 import com.example.expressfood.R
 import com.example.expressfood.data.local.UserSessionStore
 import com.example.expressfood.ui.login.LoginActivity
+import com.example.expressfood.worker.SyncScheduler
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
@@ -24,6 +25,7 @@ abstract class BaseConnectivityActivity : AppCompatActivity() {
         val app = application as ExpressFoodApplication
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
+                var wasOnline = app.connectivityObserver.isCurrentlyOnline()
                 app.connectivityObserver.isOnline.collect { online ->
                     if (online) {
                         indicatorView.text = getString(R.string.online)
@@ -31,6 +33,9 @@ abstract class BaseConnectivityActivity : AppCompatActivity() {
                             ContextCompat.getColor(this@BaseConnectivityActivity, R.color.online)
                         )
                         indicatorView.setBackgroundColor(Color.TRANSPARENT)
+                        if (!wasOnline) {
+                            SyncScheduler.enqueueImmediateSync(this@BaseConnectivityActivity)
+                        }
                     } else {
                         indicatorView.text = getString(R.string.offline)
                         indicatorView.setTextColor(Color.WHITE)
@@ -38,6 +43,7 @@ abstract class BaseConnectivityActivity : AppCompatActivity() {
                             ContextCompat.getColor(this@BaseConnectivityActivity, R.color.offline)
                         )
                     }
+                    wasOnline = online
                 }
             }
         }

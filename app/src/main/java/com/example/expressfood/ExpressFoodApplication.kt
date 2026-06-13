@@ -18,12 +18,17 @@ import com.example.expressfood.data.repository.UserRepository
 import com.example.expressfood.util.ConnectivityObserver
 import com.example.expressfood.worker.SyncMenuWorker
 import com.example.expressfood.worker.SyncOrdersWorker
+import com.example.expressfood.worker.SyncScheduler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 class ExpressFoodApplication : Application() {
+
+    private val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
     lateinit var database: AppDatabase
         private set
@@ -64,7 +69,22 @@ class ExpressFoodApplication : Application() {
         connectivityObserver = ConnectivityObserver(applicationContext)
 
         scheduleSyncWorkers()
+        observeConnectivityForSync()
         seedMenuIfNeeded()
+    }
+
+    private fun observeConnectivityForSync() {
+        applicationScope.launch {
+            var wasOnline = connectivityObserver.isCurrentlyOnline()
+            connectivityObserver.isOnline
+                .distinctUntilChanged()
+                .collect { online ->
+                    if (online && !wasOnline) {
+                        SyncScheduler.enqueueImmediateSync(this@ExpressFoodApplication)
+                    }
+                    wasOnline = online
+                }
+        }
     }
 
     private fun seedMenuIfNeeded() {
@@ -98,15 +118,6 @@ class ExpressFoodApplication : Application() {
             ordersWork
         )
 
-        workManager.enqueue(
-            androidx.work.OneTimeWorkRequestBuilder<SyncMenuWorker>()
-                .setConstraints(constraints)
-                .build()
-        )
-        workManager.enqueue(
-            androidx.work.OneTimeWorkRequestBuilder<SyncOrdersWorker>()
-                .setConstraints(constraints)
-                .build()
-        )
+        SyncScheduler.enqueueImmediateSync(this)
     }
 }

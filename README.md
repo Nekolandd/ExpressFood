@@ -2,9 +2,12 @@
 
 Aplicación Android de pedidos de comida con arquitectura **Offline First**, desarrollada en Kotlin con Firebase, Room y WorkManager.
 
+**Repositorio:** [github.com/Nekolandd/ExpressFood](https://github.com/Nekolandd/ExpressFood)  
+**Firebase:** proyecto `expressfood-dp`
+
 ## Descripción
 
-ExpressFood permite a clientes explorar un menú, agregar productos al carrito, crear órdenes y consultar reportes de consumo. Los administradores gestionan órdenes en tiempo real, consultan reportes de ingresos y administran el catálogo de productos (CRUD).
+ExpressFood permite a **clientes** explorar un menú, agregar productos al carrito, crear órdenes y consultar reportes de consumo. Los **administradores** gestionan órdenes en tiempo real, consultan reportes de ingresos y administran el catálogo de productos (CRUD).
 
 ## Tecnologías
 
@@ -12,13 +15,13 @@ ExpressFood permite a clientes explorar un menú, agregar productos al carrito, 
 |---|---|
 | Kotlin | Lenguaje principal |
 | Firebase Authentication | Login con Google |
-| Firebase Firestore | Backend remoto (users, products, orders) |
+| Firebase Firestore | Backend remoto (`users`, `products`, `orders`) |
 | Room (SQLite) | Cache local y persistencia offline |
 | RecyclerView | Listas de menú, carrito, órdenes |
 | MVVM + Repository | Arquitectura de capas |
 | WorkManager | Sincronización automática |
 | Coil | Carga de imágenes por URL |
-| GitHub Actions | CI/CD |
+| GitHub Actions | CI/CD con APK firmado y releases |
 
 ## Arquitectura
 
@@ -29,14 +32,14 @@ data/
   local/     → Room (entities, DAOs, AppDatabase)
   remote/    → Firestore data sources
   repository/→ Repositorios (fuente única de verdad híbrida)
-worker/      → SyncMenuWorker, SyncOrdersWorker
+worker/      → SyncMenuWorker, SyncOrdersWorker, SyncScheduler
 util/        → Filtros, cálculos, conectividad, reportes
 ```
 
 ### Flujo de login
 
 1. `LoginActivity` autentica con Google (Firebase Auth).
-2. Se verifica/crea el usuario en Firestore (`users/{uid}`).
+2. Se verifica/crea el usuario en Firestore (`users/{uid}`), consultando el servidor primero.
 3. Rol por defecto: `client`.
 4. Redirección según rol:
    - `client` → `ClientActivity`
@@ -44,9 +47,11 @@ util/        → Filtros, cálculos, conectividad, reportes
 
 ### Room (cache local)
 
-- **ProductEntity** — menú cacheado
-- **CartItemEntity** — carrito local
-- **OrderEntity / OrderItemEntity** — órdenes offline
+| Entidad | Contenido |
+|---|---|
+| `ProductEntity` | Menú cacheado |
+| `CartItemEntity` | Carrito local |
+| `OrderEntity` / `OrderItemEntity` | Órdenes offline |
 
 Room es la fuente inmediata para el cliente. Firestore es el backend remoto.
 
@@ -62,20 +67,21 @@ Room es la fuente inmediata para el cliente. Firestore es el backend remoto.
 |---|---|
 | Menú | Cacheado en Room vía `SyncMenuWorker` |
 | Crear orden sin internet | Guardada en Room con `synced=false` |
-| Recuperar conexión | `SyncOrdersWorker` sube órdenes pendientes y descarga cambios del usuario |
-| Cambio de estado (admin) | Firestore listener actualiza Room en el cliente en tiempo real |
+| Recuperar conexión | `SyncScheduler` encola sync inmediato; `SyncOrdersWorker` sube pendientes y descarga cambios |
+| Cambio de estado (admin) | Listener de Firestore actualiza Room en el cliente en tiempo real |
 | Indicador UI | ONLINE / OFFLINE en toolbar |
 
-### WorkManager
+### WorkManager y sincronización
 
 - **SyncMenuWorker** — descarga productos de Firestore → Room (`NetworkType.CONNECTED`)
-- **SyncOrdersWorker** — sube órdenes con `synced=false` y descarga órdenes remotas del usuario (`NetworkType.CONNECTED`)
+- **SyncOrdersWorker** — sube órdenes con `synced=false` y descarga órdenes remotas del usuario
+- **SyncScheduler** — al volver la conexión, encola ambos workers en cadena (menú → órdenes)
 
-### Sincronización de órdenes (bidireccional)
+**Flujo bidireccional de órdenes:**
 
-1. **Cliente crea orden** → Room (inmediato) → Firestore si hay red.
-2. **Admin cambia estado** → Firestore → listener en cliente → Room.
-3. **Sin conexión** → órdenes quedan en cola local hasta `SyncOrdersWorker`.
+1. Cliente crea orden → Room (inmediato) → Firestore si hay red.
+2. Admin cambia estado → Firestore → listener en cliente → Room.
+3. Sin conexión → órdenes en cola local hasta que `SyncOrdersWorker` las suba.
 
 ## Pantallas
 
@@ -88,7 +94,7 @@ Room es la fuente inmediata para el cliente. Firestore es el backend remoto.
 
 ### Admin (`AdminActivity`)
 
-1. **Panel de Órdenes** — todas las órdenes en tiempo real, filtros, cambio de estado
+1. **Panel de Órdenes** — órdenes en tiempo real, filtros, cambio de estado (Pendiente / En camino / Entregada / Cancelada)
 2. **Reporte** — cantidad e ingresos por fecha, acumulado mensual
 3. **Productos (CRUD)** — crear, editar, eliminar, deshabilitar
 
@@ -124,13 +130,13 @@ Cada uno incluye imagen pública (Unsplash), precio, ingredientes, rating y tiem
 ### Pasos
 
 1. Clonar el repositorio
-2. Colocar `google-services.json` en `app/`
+2. Colocar `google-services.json` en `app/` (no se sube al repo; descargarlo de Firebase Console)
 3. Configurar SHA-1 en Firebase Console (obligatorio para Google Sign-In)
 4. Abrir en Android Studio y sincronizar Gradle
 5. Ejecutar en emulador o dispositivo (API 24+)
 
-```bash
-./gradlew assembleDebug
+```powershell
+.\gradlew.bat assembleDebug
 ```
 
 ### Error código 10 al iniciar con Google
@@ -138,61 +144,89 @@ Cada uno incluye imagen pública (Unsplash), precio, ingredientes, rating y tiem
 Si aparece **"10:"** o un toast de configuración, el SHA-1 de tu PC no está registrado en Firebase.
 
 1. Obtén tu SHA-1 de debug:
-   ```bash
+   ```powershell
    .\gradlew.bat signingReport
    ```
-2. Copia el valor **SHA1** de la variante `debug` (ejemplo en este equipo):
-   `91:B4:9C:4E:2C:BD:9B:98:F0:1D:E7:EC:56:15:14:8A:1F:33:25:B8`
-3. [Firebase Console](https://console.firebase.google.com) → proyecto **expressfood-dp** → ⚙️ **Configuración del proyecto**
-4. En **Tus apps** → app Android `com.example.expressfood` → **Agregar huella digital**
-5. Pega el SHA-1 y guarda
-6. Descarga el nuevo `google-services.json` y reemplázalo en `app/`
-7. En Firebase → **Authentication** → **Sign-in method** → activa **Google**
-8. **Build → Clean Project** y vuelve a ejecutar la app
+   En Windows, si `keytool` no está en PATH:
+   ```powershell
+   & "C:\Program Files\Android\Android Studio\jbr\bin\keytool.exe" -list -v -keystore "$env:USERPROFILE\.android\debug.keystore" -alias androiddebugkey -storepass android -keypass android
+   ```
+2. [Firebase Console](https://console.firebase.google.com) → proyecto **expressfood-dp** → ⚙️ **Configuración del proyecto**
+3. En **Tus apps** → app Android `com.example.expressfood` → **Agregar huella digital**
+4. Pega el SHA-1 (debug para desarrollo; release para APK de producción) y guarda
+5. Descarga el nuevo `google-services.json` y reemplázalo en `app/`
+6. Firebase → **Authentication** → **Sign-in method** → activa **Google**
+7. **Build → Clean Project** y vuelve a ejecutar la app
+
+> Cada máquina de desarrollo y el keystore de release tienen SHA-1 distintos. Registra todos los que uses.
 
 ## Crear un usuario admin
 
 Por defecto todos los usuarios nuevos tienen `role: "client"`. Para promover a admin:
 
-1. Iniciar sesión una vez con la cuenta deseada
-2. En Firebase Console → Firestore → colección `users`
-3. Editar el documento del usuario (`{uid}`)
-4. Cambiar el campo `role` de `"client"` a `"admin"`
-5. Cerrar sesión y volver a iniciar sesión
+1. Iniciar sesión una vez con la cuenta deseada (esto crea el documento en Firestore)
+2. Firebase Console → Firestore → colección `users` → documento `{uid}`
+3. Cambiar el campo `role` de `"client"` a `"admin"`
+4. Cerrar sesión, **borrar datos de la app** (Ajustes → Apps → ExpressFood → Almacenamiento) e iniciar sesión de nuevo
+
+> Si el rol no cambia, la app puede tener el rol cacheado en Room. Borrar datos de la app fuerza una lectura fresca desde Firestore.
 
 ## CI/CD
 
-Pipeline en `.github/workflows/android-ci.yml`:
+Pipeline en [`.github/workflows/android-ci.yml`](.github/workflows/android-ci.yml):
 
-1. `lintDebug`
-2. `testDebugUnitTest`
-3. `assembleRelease`
-4. Subida del APK como artifact
+| Job | Qué hace |
+|---|---|
+| `build-and-test` | `lintDebug`, `testDebugUnitTest`, `jacocoTestReport`, sube reporte de cobertura |
+| `build-apk` | Decodifica secrets, compila `assembleRelease` firmado, sube APK como artifact |
+| `release` | Solo en tags `v*` — publica el APK en GitHub Releases |
+
+### Secrets de GitHub (Settings → Secrets → Actions)
+
+| Secret | Descripción |
+|---|---|
+| `GOOGLE_SERVICES_JSON` | Contenido de `app/google-services.json` en Base64 |
+| `RELEASE_KEYSTORE_BASE64` | Keystore `.jks` en Base64 |
+| `KEYSTORE_PASSWORD` | Contraseña del keystore |
+| `KEY_ALIAS` | Alias de la clave (ej. `expressfood`) |
+| `KEY_PASSWORD` | Contraseña de la clave |
+
+### Publicar una release
+
+```bash
+git tag v1.0.1
+git push origin v1.0.1
+```
+
+El workflow genera automáticamente un GitHub Release con el APK firmado.
 
 ## Pruebas unitarias
 
-Cobertura mínima objetivo: **60%** sobre clases con lógica.
+**10 tests** en `app/src/test/` que cubren la lógica principal del enunciado:
 
-| Test | Archivo |
-|---|---|
-| Filtro por nombre / ingrediente | `ProductFilterTest` |
-| RecyclerView Adapters | `ProductAdapterTest`, `CartAdapterTest` |
-| ViewModels cliente | `CartViewModelTest`, `MenuViewModelTest`, `ClientOrdersViewModelTest`, `ClientReportViewModelTest` |
-| ViewModels admin | `AdminViewModelsTest` |
-| Cálculo subtotal/impuesto/total | `OrderCalculatorTest` |
-| Reportes por día / mes | `ReportHelperTest` |
-| Repositories | `ProductRepositoryTest`, `OrderRepositoryTest`, `CartRepositoryTest`, `UserRepositoryTest` |
-| Mappers y dominio | `MapperTest`, `DomainModelTest` |
-| Sesión offline | `UserSessionStoreTest` |
-| Extensiones UI | `ViewModelFactoryTest` |
+| # | Test | Archivo | Qué valida |
+|---|---|---|---|
+| 1 | `filterByName_returnsMatchingItems` | `util/ProductFilterTest.kt` | Filtro del menú por nombre |
+| 2 | `filterByIngredient_returnsMatchingItems` | `util/ProductFilterTest.kt` | Filtro del menú por ingrediente |
+| 3 | `calculateFromCart_returnsSubtotalTaxAndTotal` | `util/OrderCalculatorTest.kt` | Subtotal, impuesto 13% y total |
+| 4 | `groupOrdersByDate_groupsOrdersAndSumsTotals` | `util/ReportHelperTest.kt` | Reporte agrupado por día |
+| 5 | `monthlyAccumulated_sumsOrdersInMonth` | `util/ReportHelperTest.kt` | Acumulado mensual |
+| 6 | `setNameFilter_showsMatchingProducts` | `ui/menu/MenuViewModelTest.kt` | ViewModel del menú |
+| 7 | `setStatusFilter_returnsMatchingOrders` | `ui/orders/ClientOrdersViewModelTest.kt` | Filtro de órdenes del cliente |
+| 8 | `processOrder_clearsCartOnSuccess` | `ui/cart/CartViewModelTest.kt` | Procesar orden y vaciar carrito |
+| 9 | `addProduct_insertsWhenNotInCart` | `data/repository/CartRepositoryTest.kt` | Agregar producto al carrito |
+| 10 | `createOrderFromCart_offlineMarksOrderAsNotSynced` | `data/repository/OrderRepositoryTest.kt` | Orden offline con `synced=false` |
 
-```bash
-# Ejecutar tests
+```powershell
+# Ejecutar los 10 tests
 .\gradlew.bat testDebugUnitTest
 
-# Generar reporte JaCoCo (HTML en app/build/reports/jacoco/jacocoTestReport/html/index.html)
+# Generar reporte JaCoCo
+# HTML en app/build/reports/jacoco/jacocoTestReport/html/index.html
 .\gradlew.bat jacocoTestReport
 ```
+
+Cobertura JaCoCo configurada sobre clases con lógica de negocio (filtros, cálculos, reportes, repositorios, ViewModels).
 
 ## Estructura de paquetes
 
@@ -214,4 +248,4 @@ com.example.expressfood
 
 ## Licencia
 
-Proyecto académico — ExpressFood.
+Proyecto académico — Grupo Estrella, ExpressFood.

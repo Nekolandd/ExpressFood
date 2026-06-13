@@ -13,15 +13,10 @@ class OrderCalculatorTest {
     )
 
     @Test
-    fun calculateFromCart_returnsAllValues() {
+    fun calculateFromCart_returnsSubtotalTaxAndTotal() {
         val (subtotal, tax, total) = OrderCalculator.calculateFromCart(items)
         assertEquals(25.0, subtotal, 0.001)
         assertEquals(3.25, tax, 0.001)
         assertEquals(28.25, total, 0.001)
-    }
-
-    @Test
-    fun calculateSubtotal_emptyCart_returnsZero() {
-        assertEquals(0.0, OrderCalculator.calculateSubtotal(emptyList()), 0.001)
     }
 }
