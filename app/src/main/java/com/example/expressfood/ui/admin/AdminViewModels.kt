@@ -27,7 +27,9 @@ class AdminOrdersViewModel(
 
     private val statusFilter = MutableStateFlow<OrderStatus?>(null)
     private val clientFilter = MutableStateFlow("")
-    private val dateFilter = MutableStateFlow("")
+    private val dateFilter = MutableStateFlow(
+        SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+    )
 
     val orders: StateFlow<List<Order>> = combine(
         orderRepository.observeRemoteOrders(),

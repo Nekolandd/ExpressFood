@@ -36,6 +36,7 @@ class CartAdapter(
         fun bind(item: CartItem) {
             binding.tvName.text = item.product.name
             binding.tvQuantity.text = item.quantity.toString()
+            binding.tvUnitPrice.text = String.format(Locale.getDefault(), "Precio unitario: $%.2f", item.product.price)
             binding.tvLineTotal.text = String.format(Locale.getDefault(), "$%.2f", item.lineTotal)
             binding.ivProduct.load(item.product.imageUrl) {
                 crossfade(true)

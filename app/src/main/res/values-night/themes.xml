@@ -1,7 +1,49 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+    <!-- Base application theme. (Defaults to Client Green in dark mode) -->
     <style name="Base.Theme.ExpressFood" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <!-- Dark Green Palette -->
+        <item name="colorPrimary">#81C784</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorSecondary">#A5D6A7</item>
+        <item name="colorTertiary">#C8E6C9</item>
+        <item name="colorOnPrimary">#1B5E20</item>
+        
+        <item name="colorPrimaryContainer">#1B5E20</item>
+        <item name="colorOnPrimaryContainer">#E8F5E9</item>
+        <item name="colorSecondaryContainer">#1B5E20</item>
+        <item name="colorOnSecondaryContainer">#E8F5E9</item>
+        
+        <item name="android:statusBarColor">#121212</item>
+        <item name="android:windowBackground">#121212</item>
+        
+        <item name="colorSurface">#121212</item>
+        <item name="colorSurfaceVariant">#242C24</item>
+        <item name="colorOnSurface">#E2EBE2</item>
+        <item name="colorOnSurfaceVariant">#8A9A8A</item>
+        <item name="colorSurfaceContainer">#1C241C</item>
+    </style>
+
+    <!-- Admin Theme (Blue in dark mode) -->
+    <style name="Theme.ExpressFood.Admin" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Dark Blue Palette -->
+        <item name="colorPrimary">#90CAF9</item>
+        <item name="colorPrimaryDark">@color/admin_primary_dark</item>
+        <item name="colorSecondary">#B3E5FC</item>
+        <item name="colorTertiary">#E1F5FE</item>
+        <item name="colorOnPrimary">#1565C0</item>
+        
+        <item name="colorPrimaryContainer">#1565C0</item>
+        <item name="colorOnPrimaryContainer">#E3F2FD</item>
+        <item name="colorSecondaryContainer">#1565C0</item>
+        <item name="colorOnSecondaryContainer">#E3F2FD</item>
+        
+        <item name="android:statusBarColor">#121212</item>
+        <item name="android:windowBackground">#121212</item>
+        
+        <item name="colorSurface">#121212</item>
+        <item name="colorSurfaceVariant">#242B35</item>
+        <item name="colorOnSurface">#E2E8F0</item>
+        <item name="colorOnSurfaceVariant">#8A99AD</item>
+        <item name="colorSurfaceContainer">#1C232D</item>
     </style>
 </resources>

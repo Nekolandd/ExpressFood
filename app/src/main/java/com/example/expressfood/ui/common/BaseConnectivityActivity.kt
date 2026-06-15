@@ -29,9 +29,7 @@ abstract class BaseConnectivityActivity : AppCompatActivity() {
                 app.connectivityObserver.isOnline.collect { online ->
                     if (online) {
                         indicatorView.text = getString(R.string.online)
-                        indicatorView.setTextColor(
-                            ContextCompat.getColor(this@BaseConnectivityActivity, R.color.online)
-                        )
+                        indicatorView.setTextColor(Color.WHITE)
                         indicatorView.setBackgroundColor(Color.TRANSPARENT)
                         if (!wasOnline) {
                             SyncScheduler.enqueueImmediateSync(this@BaseConnectivityActivity)

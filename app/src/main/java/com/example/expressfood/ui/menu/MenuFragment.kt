@@ -47,6 +47,13 @@ class MenuFragment : Fragment() {
         binding.rvProducts.layoutManager = LinearLayoutManager(requireContext())
         binding.rvProducts.adapter = adapter
 
+        binding.layoutCart.setOnClickListener {
+            (activity as? com.example.expressfood.ui.client.ClientActivity)?.let { clientActivity ->
+                clientActivity.findViewById<com.google.android.material.bottomnavigation.BottomNavigationView>(R.id.bottomNav)
+                    ?.selectedItemId = R.id.nav_cart
+            }
+        }
+
         binding.searchName.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?) = false
             override fun onQueryTextChange(newText: String?): Boolean {

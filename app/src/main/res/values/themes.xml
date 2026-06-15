@@ -1,9 +1,53 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+    <!-- Base application theme. (Defaults to Client Green) -->
     <style name="Base.Theme.ExpressFood" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- Default Material 3 colors (Green) -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorSecondary">#4CAF50</item>
+        <item name="colorTertiary">#81C784</item>
+        <item name="colorOnPrimary">@color/white</item>
+        
+        <item name="colorPrimaryContainer">@color/client_primary_light</item>
+        <item name="colorOnPrimaryContainer">@color/primary_dark</item>
+        <item name="colorSecondaryContainer">@color/client_primary_light</item>
+        <item name="colorOnSecondaryContainer">@color/primary_dark</item>
+        
+        <item name="android:statusBarColor">@color/primary_dark</item>
+        <item name="android:windowBackground">#F5F5F5</item>
+        
+        <item name="colorSurface">#F5F5F5</item>
+        <item name="colorSurfaceVariant">#E0E4DB</item>
+        <item name="colorOnSurface">#1A1C18</item>
+        <item name="colorOnSurfaceVariant">#43493E</item>
+        <item name="colorSurfaceContainer">#ECF3E9</item>
     </style>
 
     <style name="Theme.ExpressFood" parent="Base.Theme.ExpressFood" />
+
+    <!-- Client Theme (Inherits green) -->
+    <style name="Theme.ExpressFood.Client" parent="Base.Theme.ExpressFood" />
+
+    <!-- Admin Theme (Blue) -->
+    <style name="Theme.ExpressFood.Admin" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/admin_primary</item>
+        <item name="colorPrimaryDark">@color/admin_primary_dark</item>
+        <item name="colorSecondary">#2196F3</item>
+        <item name="colorTertiary">#64B5F6</item>
+        <item name="colorOnPrimary">@color/white</item>
+        
+        <item name="colorPrimaryContainer">@color/admin_primary_light</item>
+        <item name="colorOnPrimaryContainer">@color/admin_primary_dark</item>
+        <item name="colorSecondaryContainer">@color/admin_primary_light</item>
+        <item name="colorOnSecondaryContainer">@color/admin_primary_dark</item>
+        
+        <item name="android:statusBarColor">@color/admin_primary_dark</item>
+        <item name="android:windowBackground">#F5F5F5</item>
+        
+        <item name="colorSurface">#F5F5F5</item>
+        <item name="colorSurfaceVariant">#E0E2EC</item>
+        <item name="colorOnSurface">#1A1C1E</item>
+        <item name="colorOnSurfaceVariant">#43474E</item>
+        <item name="colorSurfaceContainer">#EDF1F7</item>
+    </style>
 </resources>

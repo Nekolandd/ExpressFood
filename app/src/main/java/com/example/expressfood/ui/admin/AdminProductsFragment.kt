@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -69,7 +68,7 @@ class AdminProductsFragment : Fragment() {
         dialogBinding.etRating.setText(product.rating.toString())
         dialogBinding.etImageUrl.setText(product.imageUrl)
 
-        AlertDialog.Builder(requireContext())
+        com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
             .setTitle(if (product.name.isBlank()) R.string.btn_add_product else R.string.btn_edit)
             .setView(dialogBinding.root)
             .setPositiveButton(R.string.btn_save) { _, _ ->

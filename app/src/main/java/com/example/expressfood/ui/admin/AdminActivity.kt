@@ -16,6 +16,7 @@ class AdminActivity : BaseConnectivityActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
+        supportActionBar?.title = "Panel Administrador"
         observeConnectivity(binding.tvConnectivity)
         startUserOrderSync()
 

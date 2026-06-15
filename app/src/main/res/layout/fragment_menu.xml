@@ -11,25 +11,48 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:layout_marginBottom="8dp">
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/search_bg"
             app:queryHint="@string/search_name"
             app:iconifiedByDefault="false" />
 
-        <TextView
-            android:id="@+id/tvCartBadge"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:background="@color/primary"
-            android:gravity="center"
-            android:text="0"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
+        <!-- Modern Cart icon with Badge on top-right -->
+        <FrameLayout
+            android:id="@+id/layoutCart"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="12dp"
+            android:foreground="?attr/selectableItemBackgroundBorderless">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/ic_nav_cart"
+                app:tint="?attr/colorPrimary" />
+
+            <TextView
+                android:id="@+id/tvCartBadge"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="top|end"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                android:background="@drawable/badge_bg"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
+        </FrameLayout>
 
     </LinearLayout>
 
@@ -37,6 +60,8 @@
         android:id="@+id/searchIngredient"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/search_bg"
         app:queryHint="@string/search_ingredient"
         app:iconifiedByDefault="false" />
 

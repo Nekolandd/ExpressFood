@@ -37,26 +37,42 @@ class AdminOrderAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(order: Order) {
+            binding.tvOrderId.text = "#${order.id.take(8).uppercase()}"
             binding.tvClient.text = order.userName.ifBlank { order.userId }
             binding.tvDate.text = dateFormat.format(Date(order.createdAt))
             binding.tvTotal.text = String.format(Locale.getDefault(), "$%.2f", order.total)
             StatusBadgeHelper.applyStatus(binding.chipStatus, order.status)
 
-            binding.btnOnTheWay.setOnClickListener {
-                onStatusChange(order, OrderStatus.ON_THE_WAY)
-            }
-            binding.btnDelivered.setOnClickListener {
-                onStatusChange(order, OrderStatus.DELIVERED)
-            }
-            binding.btnCancel.setOnClickListener {
-                onStatusChange(order, OrderStatus.CANCELLED)
-            }
+            val isEditable = order.status == OrderStatus.PENDING || order.status == OrderStatus.ON_THE_WAY
+            binding.btnChangeStatus.visibility = if (isEditable) android.view.View.VISIBLE else android.view.View.GONE
 
-            val canProgress = order.status == OrderStatus.PENDING
-            binding.btnOnTheWay.isEnabled = canProgress
-            binding.btnDelivered.isEnabled = order.status == OrderStatus.ON_THE_WAY
-            binding.btnCancel.isEnabled =
-                order.status == OrderStatus.PENDING || order.status == OrderStatus.ON_THE_WAY
+            if (isEditable) {
+                binding.btnChangeStatus.setOnClickListener { view ->
+                    val context = view.context
+                    val popup = androidx.appcompat.widget.PopupMenu(context, view)
+                    
+                    if (order.status == OrderStatus.PENDING) {
+                        popup.menu.add(0, 1, 0, "En camino")
+                    } else if (order.status == OrderStatus.ON_THE_WAY) {
+                        popup.menu.add(0, 2, 0, "Entregada")
+                    }
+                    popup.menu.add(0, 3, 1, "Cancelar")
+
+                    popup.setOnMenuItemClickListener { menuItem ->
+                        val nextStatus = when (menuItem.itemId) {
+                            1 -> OrderStatus.ON_THE_WAY
+                            2 -> OrderStatus.DELIVERED
+                            3 -> OrderStatus.CANCELLED
+                            else -> null
+                        }
+                        if (nextStatus != null) {
+                            onStatusChange(order, nextStatus)
+                        }
+                        true
+                    }
+                    popup.show()
+                }
+            }
         }
     }
 

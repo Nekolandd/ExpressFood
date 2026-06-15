@@ -29,10 +29,12 @@
 
         <activity
             android:name=".ui.client.ClientActivity"
+            android:theme="@style/Theme.ExpressFood.Client"
             android:exported="false" />
 
         <activity
             android:name=".ui.admin.AdminActivity"
+            android:theme="@style/Theme.ExpressFood.Admin"
             android:exported="false" />
 
     </application>

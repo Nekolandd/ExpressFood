@@ -38,6 +38,7 @@ class AdminProductAdapter(
             binding.tvPrice.text = String.format(Locale.getDefault(), "$%.2f", product.price)
             binding.tvEnabled.text = if (product.enabled) "Activo" else "Deshabilitado"
             binding.ivProduct.load(product.imageUrl)
+            binding.btnToggle.isChecked = product.enabled
             binding.btnEdit.setOnClickListener { onEdit(product) }
             binding.btnDelete.setOnClickListener { onDelete(product) }
             binding.btnToggle.setOnClickListener { onToggle(product) }

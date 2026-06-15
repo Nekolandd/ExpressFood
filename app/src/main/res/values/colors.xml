@@ -4,6 +4,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="primary">#2E7D32</color>
     <color name="primary_dark">#1B5E20</color>
+    <color name="admin_primary">#1976D2</color>
+    <color name="admin_primary_dark">#1565C0</color>
     <color name="background">#F5F5F5</color>
     <color name="text_secondary">#666666</color>
     <color name="status_pending">#FFC107</color>
@@ -12,4 +14,7 @@
     <color name="status_cancelled">#F44336</color>
     <color name="online">#4CAF50</color>
     <color name="offline">#F44336</color>
+    <color name="client_primary_light">#C8E6C9</color>
+    <color name="admin_primary_light">#BBDEFB</color>
+    <color name="delete_button_bg">#FFEBEE</color>
 </resources>

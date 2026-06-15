@@ -1,0 +1,54 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+
+    <!-- Background shadow or glow can be added if needed, but let's keep it clean -->
+
+    <!-- Speed Lines (Left) -->
+    <path
+        android:pathData="M18,43 L32,43"
+        android:strokeColor="#4CAF50"
+        android:strokeWidth="3.5"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M12,53 L28,53"
+        android:strokeColor="#4CAF50"
+        android:strokeWidth="3.5"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M20,63 L30,63"
+        android:strokeColor="#4CAF50"
+        android:strokeWidth="3.5"
+        android:strokeLineCap="round" />
+
+    <!-- Bag Handle -->
+    <path
+        android:pathData="M44,35 C44,22 56,22 56,35"
+        android:strokeColor="#2E7D32"
+        android:strokeWidth="4"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000" />
+
+    <!-- Bag Body -->
+    <!-- Gradient or solid color for the bag -->
+    <path
+        android:pathData="M43,35 L57,35 C59.5,35 61.5,36.8 62,39.2 L66.5,68.2 C67.2,72.2 64.1,75 60.1,75 L39.9,75 C35.9,75 32.8,72.2 33.5,68.2 L38,39.2 C38.5,36.8 40.5,35 43,35 Z"
+        android:fillColor="#4CAF50" />
+
+    <!-- Bag Front Detail (slightly darker right half for 3D depth, optional but premium!) -->
+    <path
+        android:pathData="M50,35 L57,35 C59.5,35 61.5,36.8 62,39.2 L66.5,68.2 C67.2,72.2 64.1,75 60.1,75 L50,75 Z"
+        android:fillColor="#388E3C" />
+
+    <!-- Letter 'E' (Center of the bag) -->
+    <path
+        android:pathData="M45,46 L55,46 M45,55 L52,55 M45,64 L55,64 M45,46 L45,64"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="4.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:fillColor="#00000000" />
+
+</vector>

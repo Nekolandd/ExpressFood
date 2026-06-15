@@ -65,11 +65,65 @@ class AdminOrdersFragment : Fragment() {
             }
         })
 
+        binding.etDateFilter.setOnClickListener {
+            showDatePicker()
+        }
+
+        val todayStr = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault()).format(java.util.Date())
+        binding.etDateFilter.setText(todayStr)
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.orders.collect { adapter.submitList(it) }
+                viewModel.orders.collect { ordersList ->
+                    adapter.submitList(ordersList)
+                    updateSummaryCard(ordersList)
+                }
             }
         }
+    }
+
+    private fun showDatePicker() {
+        val datePicker = com.google.android.material.datepicker.MaterialDatePicker.Builder.datePicker()
+            .setTitleText("Seleccionar fecha")
+            .build()
+            
+        datePicker.addOnPositiveButtonClickListener { selection ->
+            val sdf = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault()).apply {
+                timeZone = java.util.TimeZone.getTimeZone("UTC")
+            }
+            val formattedDate = sdf.format(java.util.Date(selection))
+            binding.etDateFilter.setText(formattedDate)
+        }
+        datePicker.show(childFragmentManager, "DATE_PICKER")
+    }
+
+    private fun updateSummaryCard(orders: List<com.example.expressfood.domain.model.Order>) {
+        val dateFilter = binding.etDateFilter.text.toString().trim()
+        val todayStr = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault()).format(java.util.Date())
+        val header = when {
+            dateFilter.isBlank() -> "Total:"
+            dateFilter == todayStr -> "Hoy:"
+            else -> {
+                try {
+                    val inputSdf = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+                    val outputSdf = java.text.SimpleDateFormat("dd/MM/yyyy", java.util.Locale.getDefault())
+                    val date = inputSdf.parse(dateFilter)
+                    if (date != null) outputSdf.format(date) else dateFilter
+                } catch (e: Exception) {
+                    dateFilter
+                }
+            }
+        }
+
+        val totalAmount = orders.sumOf { it.total }
+        binding.tvSummaryHeader.text = header
+        binding.tvSummaryDetails.text = String.format(
+            java.util.Locale.getDefault(),
+            "%d %s · $%.2f",
+            orders.size,
+            if (orders.size == 1) "orden" else "órdenes",
+            totalAmount
+        )
     }
 
     private fun setupStatusFilters() {
