@@ -1,4 +1,4 @@
-package com.example.expressfood.data.remote
+﻿package com.example.expressfood.data.remote
 
 import com.example.expressfood.domain.model.Order
 import com.example.expressfood.domain.model.OrderItem
@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 
+// lectura y creación de usuarios en Firestore (rol cliente o admin).
 class FirestoreUserDataSource(
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 ) {
@@ -81,6 +82,7 @@ class FirestoreUserDataSource(
     }
 }
 
+// productos en Firestore con respaldo en caché si no hay red.
 class FirestoreProductDataSource(
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 ) {
@@ -138,6 +140,7 @@ class FirestoreProductDataSource(
     )
 }
 
+// órdenes en Firestore con listeners en tiempo real.
 class FirestoreOrderDataSource(
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 ) {
@@ -170,6 +173,7 @@ class FirestoreOrderDataSource(
             .await()
     }
 
+    // el admin ve nuevas órdenes y cambios de estado al instante.
     fun observeAllOrders(): Flow<List<Order>> = callbackFlow {
         val registration: ListenerRegistration = ordersCollection
             .orderBy("createdAt", com.google.firebase.firestore.Query.Direction.DESCENDING)
@@ -184,6 +188,7 @@ class FirestoreOrderDataSource(
         awaitClose { registration.remove() }
     }
 
+    // el cliente recibe en vivo los cambios de estado de sus pedidos.
     fun observeOrdersForUser(userId: String): Flow<List<Order>> = callbackFlow {
         val registration: ListenerRegistration = ordersCollection
             .whereEqualTo("userId", userId)

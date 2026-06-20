@@ -1,4 +1,4 @@
-package com.example.expressfood.util
+﻿package com.example.expressfood.util
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 
+// avisa a la app cuando hay o no hay conexión a internet.
 class ConnectivityObserver(context: Context) {
 
     private val connectivityManager =

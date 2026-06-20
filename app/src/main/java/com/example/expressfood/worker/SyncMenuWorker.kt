@@ -1,10 +1,11 @@
-package com.example.expressfood.worker
+﻿package com.example.expressfood.worker
 
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.expressfood.ExpressFoodApplication
 
+// descarga el menú actualizado de Firestore hacia Room.
 class SyncMenuWorker(
     context: Context,
     params: WorkerParameters

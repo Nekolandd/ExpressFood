@@ -1,4 +1,4 @@
-package com.example.expressfood.worker
+﻿package com.example.expressfood.worker
 
 import android.content.Context
 import androidx.work.Constraints
@@ -7,6 +7,7 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 
+// encola la sincronización inmediata cuando hay conexión (menú → órdenes).
 object SyncScheduler {
 
     private const val SYNC_ON_CONNECT_WORK = "sync_on_connectivity"

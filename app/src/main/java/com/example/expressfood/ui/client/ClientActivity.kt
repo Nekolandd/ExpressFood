@@ -1,4 +1,4 @@
-package com.example.expressfood.ui.client
+﻿package com.example.expressfood.ui.client
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,6 +10,7 @@ import com.example.expressfood.ui.menu.MenuFragment
 import com.example.expressfood.ui.orders.ClientReportFragment
 import com.example.expressfood.ui.orders.OrdersFragment
 
+// pantalla principal del cliente (menú, carrito, órdenes y reporte).
 class ClientActivity : BaseConnectivityActivity() {
 
     private lateinit var binding: ActivityClientBinding

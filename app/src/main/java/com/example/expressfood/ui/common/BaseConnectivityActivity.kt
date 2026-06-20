@@ -1,4 +1,4 @@
-package com.example.expressfood.ui.common
+﻿package com.example.expressfood.ui.common
 
 import android.content.Intent
 import android.graphics.Color
@@ -19,8 +19,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
+// indicador ONLINE/OFFLINE, sync al reconectar y escucha de órdenes.
 abstract class BaseConnectivityActivity : AppCompatActivity() {
 
+    // Muestra el estado de red y dispara sincronización cuando vuelve internet.
     protected fun observeConnectivity(indicatorView: android.widget.TextView) {
         val app = application as ExpressFoodApplication
         lifecycleScope.launch {
@@ -47,6 +49,7 @@ abstract class BaseConnectivityActivity : AppCompatActivity() {
         }
     }
 
+    // mantiene actualizadas las órdenes del usuario mientras la app está abierta.
     protected fun startUserOrderSync() {
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
         val app = application as ExpressFoodApplication

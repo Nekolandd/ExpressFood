@@ -1,4 +1,4 @@
-package com.example.expressfood.ui.login
+﻿package com.example.expressfood.ui.login
 
 import android.content.Intent
 import android.os.Bundle
@@ -19,11 +19,13 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.launch
 
+// pantalla de inicio de sesión con Google y redirección según rol (cliente o admin).
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private lateinit var auth: FirebaseAuth
 
+    // Recibe el resultado del selector de cuenta de Google.
     private val launcher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -99,6 +101,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    // Consulta el rol del usuario y abre la pantalla correspondiente.
     private fun navigateAfterLogin() {
         val firebaseUser = auth.currentUser ?: return
         val app = application as ExpressFoodApplication

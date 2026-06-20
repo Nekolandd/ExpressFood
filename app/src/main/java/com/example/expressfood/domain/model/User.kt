@@ -1,5 +1,6 @@
-package com.example.expressfood.domain.model
+﻿package com.example.expressfood.domain.model
 
+// roles que determinan si el usuario entra como cliente o administrador.
 enum class UserRole {
     CLIENT,
     ADMIN;

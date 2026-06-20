@@ -1,4 +1,4 @@
-package com.example.expressfood.util
+﻿package com.example.expressfood.util
 
 import com.example.expressfood.domain.model.Order
 import java.text.SimpleDateFormat
@@ -6,6 +6,7 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
+// agrupa órdenes por día y calcula totales mensuales para reportes.
 object ReportHelper {
 
     data class DailySummary(

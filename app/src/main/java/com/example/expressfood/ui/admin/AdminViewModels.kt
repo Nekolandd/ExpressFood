@@ -1,4 +1,4 @@
-package com.example.expressfood.ui.admin
+﻿package com.example.expressfood.ui.admin
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,6 +21,7 @@ import java.util.Date
 import java.util.Locale
 import java.util.UUID
 
+// panel del admin con filtros por estado, cliente y fecha.
 class AdminOrdersViewModel(
     private val orderRepository: OrderRepository
 ) : ViewModel() {
@@ -74,6 +75,7 @@ class AdminOrdersViewModel(
     }
 }
 
+// reporte de ventas e ingresos de todo el negocio.
 class AdminReportViewModel(
     orderRepository: OrderRepository
 ) : ViewModel() {
@@ -87,6 +89,7 @@ class AdminReportViewModel(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0.0)
 }
 
+// crear, editar, eliminar o deshabilitar productos del menú.
 class AdminProductsViewModel(
     private val productRepository: ProductRepository
 ) : ViewModel() {

@@ -1,7 +1,8 @@
-package com.example.expressfood.util
+﻿package com.example.expressfood.util
 
 import com.example.expressfood.domain.model.CartItem
 
+// calcula subtotal, impuesto del 13% y total del pedido.
 object OrderCalculator {
 
     const val TAX_RATE = 0.13

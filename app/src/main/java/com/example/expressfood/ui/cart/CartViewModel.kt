@@ -1,4 +1,4 @@
-package com.example.expressfood.ui.cart
+﻿package com.example.expressfood.ui.cart
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
+// gestiona cantidades del carrito y crea la orden con impuestos incluidos.
 class CartViewModel(
     private val cartRepository: CartRepository,
     private val orderRepository: OrderRepository,
@@ -59,6 +60,7 @@ class CartViewModel(
         viewModelScope.launch { cartRepository.removeItem(productId) }
     }
 
+    // Convierte el carrito en una orden; si no hay red, queda pendiente de sincronizar.
     fun processOrder() {
         viewModelScope.launch {
             val items = cartItems.first()

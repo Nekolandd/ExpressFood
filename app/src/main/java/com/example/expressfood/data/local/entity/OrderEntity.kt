@@ -1,8 +1,9 @@
-package com.example.expressfood.data.local.entity
+﻿package com.example.expressfood.data.local.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+// synced indica si la orden ya fue subida a Firestore.
 @Entity(tableName = "orders")
 data class OrderEntity(
     @PrimaryKey val id: String,
