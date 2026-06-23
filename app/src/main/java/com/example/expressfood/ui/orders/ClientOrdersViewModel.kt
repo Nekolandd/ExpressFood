@@ -1,4 +1,4 @@
-package com.example.expressfood.ui.orders
+﻿package com.example.expressfood.ui.orders
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
+// historial de órdenes del cliente con filtro por estado.
 class ClientOrdersViewModel(
     orderRepository: OrderRepository,
     userId: String
@@ -32,6 +33,7 @@ class ClientOrdersViewModel(
     }
 }
 
+// reporte de gastos diarios y acumulado del mes del cliente.
 class ClientReportViewModel(
     orderRepository: OrderRepository,
     userId: String

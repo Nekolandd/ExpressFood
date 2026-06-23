@@ -1,4 +1,4 @@
-package com.example.expressfood.ui.menu
+﻿package com.example.expressfood.ui.menu
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,12 +15,14 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
+// muestra el menú, aplica filtros de búsqueda y agrega productos al carrito.
 class MenuViewModel(
     private val productRepository: ProductRepository,
     private val cartRepository: CartRepository
 ) : ViewModel() {
 
     init {
+        // Carga el menú desde la base local (funciona también sin internet).
         viewModelScope.launch {
             productRepository.ensureLocalMenu()
         }

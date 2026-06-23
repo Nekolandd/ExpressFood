@@ -1,4 +1,4 @@
-package com.example.expressfood.worker
+﻿package com.example.expressfood.worker
 
 import android.content.Context
 import androidx.work.CoroutineWorker
@@ -6,6 +6,7 @@ import androidx.work.WorkerParameters
 import com.example.expressfood.ExpressFoodApplication
 import com.google.firebase.auth.FirebaseAuth
 
+// sube órdenes pendientes y baja las del usuario desde Firestore.
 class SyncOrdersWorker(
     context: Context,
     params: WorkerParameters

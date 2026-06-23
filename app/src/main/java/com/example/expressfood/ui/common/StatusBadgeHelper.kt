@@ -1,4 +1,4 @@
-package com.example.expressfood.ui.common
+﻿package com.example.expressfood.ui.common
 
 import android.content.Context
 import android.graphics.drawable.GradientDrawable
@@ -7,6 +7,7 @@ import com.example.expressfood.R
 import com.example.expressfood.domain.model.OrderStatus
 import com.google.android.material.chip.Chip
 
+// colores del distintivo según el estado de la orden.
 object StatusBadgeHelper {
 
     fun applyStatus(chip: Chip, status: OrderStatus) {

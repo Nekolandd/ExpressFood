@@ -1,4 +1,4 @@
-package com.example.expressfood.ui.menu
+﻿package com.example.expressfood.ui.menu
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,6 +17,7 @@ import com.example.expressfood.ui.ExpressFoodViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
+// lista de platillos con búsqueda por nombre e ingredientes.
 class MenuFragment : Fragment() {
 
     private var _binding: FragmentMenuBinding? = null

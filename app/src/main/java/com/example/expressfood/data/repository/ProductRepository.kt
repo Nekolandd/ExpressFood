@@ -1,4 +1,4 @@
-package com.example.expressfood.data.repository
+﻿package com.example.expressfood.data.repository
 
 import com.example.expressfood.data.local.AppDatabase
 import com.example.expressfood.data.local.toDomain
@@ -9,6 +9,7 @@ import com.example.expressfood.domain.model.Product
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
+// menú local, sincronización remota y CRUD de productos del admin.
 class ProductRepository(
     private val database: AppDatabase,
     private val remote: FirestoreProductDataSource = FirestoreProductDataSource()
@@ -19,6 +20,7 @@ class ProductRepository(
 
     fun getAllProductsFlow() = productDao.getAllProducts()
 
+    // Si no hay menú guardado, lo descarga o usa datos por defecto.
     suspend fun ensureLocalMenu() = withContext(Dispatchers.IO) {
         if (productDao.count() > 0) return@withContext
         val products = try {
@@ -29,6 +31,7 @@ class ProductRepository(
         productDao.insertAll(products.map { it.toEntity() })
     }
 
+    // actualiza el menú local con los productos más recientes de Firestore.
     suspend fun syncFromRemote(): Result<Unit> = withContext(Dispatchers.IO) {
         runCatching {
             val products = try {

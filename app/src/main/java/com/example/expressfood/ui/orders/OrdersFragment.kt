@@ -1,4 +1,4 @@
-package com.example.expressfood.ui.orders
+﻿package com.example.expressfood.ui.orders
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,6 +17,7 @@ import com.example.expressfood.ui.ExpressFoodViewModelFactory
 import com.google.android.material.chip.Chip
 import kotlinx.coroutines.launch
 
+// listado de pedidos del cliente con filtros por estado.
 class OrdersFragment : Fragment() {
 
     private var _binding: FragmentOrdersBinding? = null
@@ -77,6 +78,7 @@ class OrdersFragment : Fragment() {
     }
 }
 
+// reporte de gastos del cliente agrupados por día.
 class ClientReportFragment : Fragment() {
 
     private var _binding: com.example.expressfood.databinding.FragmentClientReportBinding? = null

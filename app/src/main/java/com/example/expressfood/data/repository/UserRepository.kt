@@ -1,4 +1,4 @@
-package com.example.expressfood.data.repository
+﻿package com.example.expressfood.data.repository
 
 import com.example.expressfood.data.local.UserSessionStore
 import com.example.expressfood.data.remote.FirestoreUserDataSource
@@ -7,6 +7,7 @@ import com.example.expressfood.domain.model.UserRole
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
+// obtiene o crea el usuario en Firestore y guarda su rol localmente.
 class UserRepository(
     private val sessionStore: UserSessionStore,
     private val remote: FirestoreUserDataSource = FirestoreUserDataSource()

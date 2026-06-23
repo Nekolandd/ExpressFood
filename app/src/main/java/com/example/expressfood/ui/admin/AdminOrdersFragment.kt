@@ -1,4 +1,4 @@
-package com.example.expressfood.ui.admin
+﻿package com.example.expressfood.ui.admin
 
 import android.os.Bundle
 import android.text.Editable
@@ -19,6 +19,7 @@ import com.example.expressfood.ui.ExpressFoodViewModelFactory
 import com.google.android.material.chip.Chip
 import kotlinx.coroutines.launch
 
+// panel donde el admin ve y gestiona todas las órdenes.
 class AdminOrdersFragment : Fragment() {
 
     private var _binding: FragmentAdminOrdersBinding? = null
@@ -149,6 +150,7 @@ class AdminOrdersFragment : Fragment() {
     }
 }
 
+// reporte de ventas e ingresos globales del negocio.
 class AdminReportFragment : Fragment() {
 
     private var _binding: com.example.expressfood.databinding.FragmentAdminReportBinding? = null

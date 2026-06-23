@@ -1,4 +1,4 @@
-package com.example.expressfood.data.repository
+﻿package com.example.expressfood.data.repository
 
 import com.example.expressfood.data.local.AppDatabase
 import com.example.expressfood.data.local.entity.CartItemEntity
@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
+// guarda y modifica los productos que el cliente lleva en el carrito.
 class CartRepository(
     private val database: AppDatabase
 ) {

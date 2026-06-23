@@ -1,4 +1,4 @@
-package com.example.expressfood.ui.cart
+﻿package com.example.expressfood.ui.cart
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,6 +17,7 @@ import com.example.expressfood.ui.ExpressFoodViewModelFactory
 import kotlinx.coroutines.launch
 import java.util.Locale
 
+// pantalla del carrito con totales y botón para procesar la orden.
 class CartFragment : Fragment() {
 
     private var _binding: FragmentCartBinding? = null

@@ -1,7 +1,8 @@
-package com.example.expressfood.util
+﻿package com.example.expressfood.util
 
 import com.example.expressfood.domain.model.Product
 
+// filtra el menú mientras el usuario escribe en la barra de búsqueda.
 object ProductFilter {
 
     fun filterByName(products: List<Product>, query: String): List<Product> {

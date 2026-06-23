@@ -1,4 +1,4 @@
-package com.example.expressfood.ui.admin
+﻿package com.example.expressfood.ui.admin
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,6 +18,7 @@ import com.example.expressfood.domain.model.Product
 import com.example.expressfood.ui.ExpressFoodViewModelFactory
 import kotlinx.coroutines.launch
 
+// pantalla del admin para administrar el catálogo de platillos.
 class AdminProductsFragment : Fragment() {
 
     private var _binding: FragmentAdminProductsBinding? = null

@@ -1,4 +1,4 @@
-package com.example.expressfood.data.repository
+﻿package com.example.expressfood.data.repository
 
 import com.example.expressfood.data.local.AppDatabase
 import com.example.expressfood.data.local.toDomain
@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.withContext
 import java.util.UUID
 
+// crea órdenes, las guarda en Room y las sincroniza con Firestore.
 class OrderRepository(
     private val database: AppDatabase,
     private val remote: FirestoreOrderDataSource = FirestoreOrderDataSource()
@@ -35,14 +36,13 @@ class OrderRepository(
 
     fun observeRemoteOrders(): Flow<List<Order>> = remote.observeAllOrders()
 
-    /**
-     * Escucha cambios en Firestore del usuario y los persiste en Room (offline-first).
-     */
+    // Escucha cambios en Firestore y los guarda en Room; el cliente ve al instante los cambios de estado.
     fun observeAndSyncUserOrders(userId: String): Flow<List<Order>> =
         remote.observeOrdersForUser(userId)
             .onEach { orders -> syncRemoteOrdersToLocal(orders) }
             .flowOn(Dispatchers.IO)
 
+    // Guarda la orden en Room primero; sube a Firestore solo si hay conexión.
     suspend fun createOrderFromCart(
         userId: String,
         userName: String,
@@ -88,6 +88,7 @@ class OrderRepository(
         order.copy(synced = synced)
     }
 
+    // sube a la nube las órdenes que quedaron con synced = false.
     suspend fun syncUnsyncedOrders(): Result<Int> = withContext(Dispatchers.IO) {
         runCatching {
             val unsynced = orderDao.getUnsyncedOrders()
@@ -110,6 +111,7 @@ class OrderRepository(
         }
     }
 
+    // el admin cambia el estado y se refleja en Firestore y en Room.
     suspend fun updateOrderStatus(orderId: String, status: OrderStatus) =
         withContext(Dispatchers.IO) {
             remote.updateOrderStatus(orderId, status)

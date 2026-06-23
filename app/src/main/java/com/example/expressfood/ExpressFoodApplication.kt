@@ -1,4 +1,4 @@
-package com.example.expressfood
+﻿package com.example.expressfood
 
 import android.app.Application
 import androidx.room.Room
@@ -26,6 +26,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
+// Punto de entrada: inicializa Room, repositorios, red y sincronización en segundo plano.
 class ExpressFoodApplication : Application() {
 
     private val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
@@ -51,6 +52,7 @@ class ExpressFoodApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        // Firestore guarda datos en caché para consultas sin conexión.
         FirebaseFirestore.getInstance().firestoreSettings =
             FirebaseFirestoreSettings.Builder()
                 .setPersistenceEnabled(true)
@@ -73,6 +75,7 @@ class ExpressFoodApplication : Application() {
         seedMenuIfNeeded()
     }
 
+    // al recuperar internet, encola la sincronización de menú y órdenes.
     private fun observeConnectivityForSync() {
         applicationScope.launch {
             var wasOnline = connectivityObserver.isCurrentlyOnline()
@@ -93,6 +96,7 @@ class ExpressFoodApplication : Application() {
         }
     }
 
+    // programa workers periódicos que solo corren cuando hay red.
     private fun scheduleSyncWorkers() {
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)

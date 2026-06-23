@@ -1,4 +1,4 @@
-package com.example.expressfood.ui.admin
+﻿package com.example.expressfood.ui.admin
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,6 +6,7 @@ import com.example.expressfood.R
 import com.example.expressfood.databinding.ActivityAdminBinding
 import com.example.expressfood.ui.common.BaseConnectivityActivity
 
+// pantalla principal del administrador (órdenes, reporte y productos).
 class AdminActivity : BaseConnectivityActivity() {
 
     private lateinit var binding: ActivityAdminBinding
