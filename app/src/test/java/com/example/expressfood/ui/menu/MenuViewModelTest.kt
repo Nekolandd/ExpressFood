@@ -45,7 +45,7 @@ class MenuViewModelTest {
         val productRepository = mockk<ProductRepository>()
         val cartRepository = mockk<CartRepository>(relaxed = true)
         val products = listOf(
-            ProductEntity("1", "Pizza Margarita", 12.99, "Tomate", 25, 4.7, "url", true),
+            ProductEntity("", "Pizza Margarita", 12.99, "Tomate", 25, 4.7, "url", true),
             ProductEntity("2", "Hamburguesa Clásica", 9.50, "Carne", 20, 4.5, "url", true)
         )
 
