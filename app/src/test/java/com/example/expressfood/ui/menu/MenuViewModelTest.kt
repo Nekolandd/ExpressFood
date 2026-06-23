@@ -46,7 +46,7 @@ class MenuViewModelTest {
         val cartRepository = mockk<CartRepository>(relaxed = true)
         val products = listOf(
             ProductEntity("", "Pizza Margarita", 12.99, "Tomate", 25, 4.7, "url", true),
-            ProductEntity("2", "Hamburguesa Clásica", 9.50, "Carne", 20, 4.5, "url", true)
+            ProductEntity("99", "Hamburguesa Clásica", 9.50, "Carne", 20, 4.5, "url", true)
         )
 
         every { productRepository.getEnabledProducts() } returns flowOf(products)
